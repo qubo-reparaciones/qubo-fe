@@ -2,7 +2,8 @@ import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import 'typeface-roboto';
 import CustomerRegister from './components/CustomerRegister';
 import Navbar from './components/layout/Navbar';
@@ -22,6 +23,7 @@ function App() {
     <Router>
       <Navbar/>
       <Container maxWidth={'xl'} className={classes.container}>
+        <ToastContainer autoClose={false}/>
         <Switch>
           <Route exact path={rutas.homePage} component={CustomerRegister}/>
         </Switch>
