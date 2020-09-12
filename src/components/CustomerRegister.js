@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import _ from 'lodash';
 import React from 'react';
+import { toast } from 'react-toastify';
 
 import CustomerService from '../services/CustomerService.js';
 
@@ -16,7 +17,6 @@ class CustomerRegister extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      codigoVisible: false,
       newCustomer: {
         name: '',
         lastname: '',
@@ -37,14 +37,43 @@ class CustomerRegister extends React.Component {
       .then((response) => {
         if(response.ok) {
           response.json().then((body) => {
-            JSON.stringify(body);
-            this.props.onLogin(body);
+            const vody = JSON.stringify(body);
+            console.log('Body: ' + vody);
+            this.showOnSuccessful("¡Bienvenide " + body.name + " " + body.lastname);
           });
         } else {
-          response.json().then((body) => this.setState({ errors: body }));
+          console.log(JSON.stringify(response));
+          response.json().then((error) => this.showOnError(error.message));
         }
-      });
+      }).catch(error => {
+      console.log(JSON.stringify(error));
+      this.showOnError(error.message);
+    });
   };
+
+  showOnSuccessful(message) {
+    toast.success(message, {
+      position: 'bottom-center',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined
+    });
+  }
+
+  showOnError(message) {
+    toast.error(message, {
+      position: 'bottom-center',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined
+    });
+  }
 
   onKeyDown = (event) => {
     if(event.key === 'Enter') {
@@ -149,7 +178,7 @@ class CustomerRegister extends React.Component {
               fullWidth
               variant="contained"
               color="primary">
-              AGREGAR CLIENTE
+              REGISTRAR
             </Button>
           </form>
         </div>
